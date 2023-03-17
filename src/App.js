@@ -1,10 +1,12 @@
 
 import './App.css';
-import React,{ useState } from 'react';
+import { useState } from 'react';
 import Title from './components/Title'
 import Modal from './components/Modal';
+import EvenList from './components/EvenList';
 
 function App() {
+  const [showModal, setShowModal] = useState(false)
   const [showEvents, setShowEvents] = useState(true)
   const [events, setEvents] = useState([
     {title: "mario's birthday bash", id:1},
@@ -12,7 +14,7 @@ function App() {
     {title: "race on moo moo farm", id:3}
   ])
 
-  console.log(showEvents)
+  console.log(showModal)
 
   const handleClick = (id) => {
     setEvents((prevEvents) => {
@@ -21,6 +23,10 @@ function App() {
       })
     })
     console.log(id)
+  }
+
+  const handleClose = () => {
+    setShowModal(false)
   }
 
   const subtitle = "All the latest events in Marioland"
@@ -39,27 +45,25 @@ function App() {
           <button onClick={() => setShowEvents(true)}>show events</button>
         </div>
       )}
-      {showEvents && events.map((event, index) => (
-        <React.Fragment key={event.id }>
-          <h2>{index} - {event.title}</h2>
-          <button onClick={() => handleClick(event.id)}>delete event</button>
-        </React.Fragment>
-      ))}
+      {showEvents && <EvenList events={events} handleClick={handleClick} />}
 
       {/* <Modal>
         <h2>10% Off Coupon Code!!</h2>
         <p>Use the code NINJA10 at the checkout.</p>
       </Modal> */}
-      <Modal>
+      {showModal && <Modal handleClose={handleClose}>
         <h2>Terms and Conditions</h2>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, Error odit nam et
           reprehenderit quibusdam temporibus officia dolorum quo sint nemo quis, laborum,
           quasi nisi fugit praesentium debitis repudiandae! Sapiente, omnis.</p>
-          <a href="#">Find out more...</a>
-      </Modal>
+      </Modal>}
+
+      <div>
+        <button onClick={() => setShowModal(true)}>Show Modal</button>
+      </div>
 
     </div>
   );
-}
+} 
 
 export default App;
