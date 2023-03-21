@@ -4,17 +4,19 @@ import { useState } from 'react';
 import Title from './components/Title'
 import Modal from './components/Modal';
 import EvenList from './components/EvenList';
+import NewEventForm from './components/NewEventForm';
 
 function App() {
   const [showModal, setShowModal] = useState(false)
   const [showEvents, setShowEvents] = useState(true)
-  const [events, setEvents] = useState([
-    {title: "mario's birthday bash", id:1},
-    {title: "bowser live stream", id:2},
-    {title: "race on moo moo farm", id:3}
-  ])
+  const [events, setEvents] = useState([])
 
-  console.log(showModal)
+  const addEvent = (event) => {
+    setEvents((prevEvents) => {
+      return [...prevEvents, event]
+    })
+    setShowModal(false)
+  }
 
   const handleClick = (id) => {
     setEvents((prevEvents) => {
@@ -23,10 +25,6 @@ function App() {
       })
     })
     console.log(id)
-  }
-
-  const handleClose = () => {
-    setShowModal(false)
   }
 
   const subtitle = "All the latest events in Marioland"
@@ -47,19 +45,12 @@ function App() {
       )}
       {showEvents && <EvenList events={events} handleClick={handleClick} />}
 
-      {/* <Modal>
-        <h2>10% Off Coupon Code!!</h2>
-        <p>Use the code NINJA10 at the checkout.</p>
-      </Modal> */}
-      {showModal && <Modal handleClose={handleClose}>
-        <h2>Terms and Conditions</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, Error odit nam et
-          reprehenderit quibusdam temporibus officia dolorum quo sint nemo quis, laborum,
-          quasi nisi fugit praesentium debitis repudiandae! Sapiente, omnis.</p>
+      {showModal && <Modal isSalesModal={true}>
+        <NewEventForm addEvent={addEvent}/>
       </Modal>}
 
       <div>
-        <button onClick={() => setShowModal(true)}>Show Modal</button>
+        <button onClick={() => setShowModal(true)}>Add New Event</button>
       </div>
 
     </div>
